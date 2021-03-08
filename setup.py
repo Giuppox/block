@@ -10,6 +10,7 @@ from block_utils import (
 import logging
 from distutils.ccompiler import new_compiler
 from distutils.core import setup, Extension
+from distutils import sysconfig
 
 logging.basicConfig( level=logging.DEBUG )
 LOGGER = logging.getLogger( 'SETUP' )
@@ -50,6 +51,7 @@ def build():
         CC = new_compiler()
         # Pass include directory.
         CC.add_include_dir( BLOCK_DIR )
+        CC.add_include_dir( sysconfig.get_python_inc() )
         # Compile core.
         objects = CC.compile([ os.path.join( BLOCK_DIR, 'core.c' ) ], output_dir=BUILD_DIR )
         # Link shared libraries.
