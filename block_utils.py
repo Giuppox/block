@@ -12,10 +12,12 @@ V = tuple( __version__.split( '.' ) )
 # The email of the author.
 __email__ = 'giulioprocopioo@gmail.com'
 
-# The description of the library.
-import os                                                        # Import os python module.
-LIBPATH = f"{os.path.dirname( __file__ )}/"                      # Get library absolute path.
-__description__ = open( f'{LIBPATH}README.md', 'r' ).read()      # Open `block/README.md` and read its content.
+# A short description of the library.
+__description__ = 'Block python library'
 
 # The license of the library.
 __license__ = 'MIT'
+
+# Store library absolute path.
+import os
+PATH = os.path.dirname( __file__ )
