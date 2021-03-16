@@ -21,7 +21,7 @@ import warnings
 
 import builtins
 
-import setuptools
+from setuptools import setup, Extension
 from Cython.Build import cythonize
 
 logging.basicConfig( level=logging.DEBUG )
@@ -76,7 +76,7 @@ def parse_commands():
     # fine as they are, but are usually used together with one of the commands
     # below and not standalone. Hence they're not added to `build_commands`.
     # Also, 'install' isn't added to `supported_commands` just because it is handled later.
-    supported_commands = ['develop', 'sdist', 'build', 'build_ext', 'build_py',
+    supported_commands = ['develop', 'build', 'build_ext', 'build_py',
                      'build_clib', 'build_scripts', 'bdist_wheel', 'bdist_rpm',
                      'bdist_wininst', 'bdist_msi', 'bdist_mpkg', 'build_src',
                      'bdist_egg']
@@ -143,15 +143,14 @@ def parse_commands():
         if command == args:
             if not force:
                 print( textwrap.dedent( unsupported_commands[command] ) +
-                    "\nAdd `--force` to your command to use it anyway if you "
-                    "must (unsupported).\n"
+                    "\nAdd `--force` to your command to use it anyway if you must (unsupported).\n"
                     )
                 sys.exit( -1 )
             else:
                 return False
 
     # Commands that don't print info, but also don't need the module building.
-    other_commands = ['egg_info', 'install_egg_info', 'rotate', 'dist_info']
+    other_commands = ['egg_info', 'install_egg_info', 'rotate', 'dist_info', 'sdist']
 
     # If one command present in `other_commands` is passed then return `False`
     # (no need for module building).
@@ -161,8 +160,7 @@ def parse_commands():
     # If the function hasn't recognized what `setup.py` command was given, raise `RuntimeError`.
     raise RuntimeError( "Command `setup.py {}` is unrecognised".format( args ) )
 
-
-def setup():
+def setup_package():
     """ Run the Setup of the package. """
     # Get current working directory.
     old_path = os.getcwd()
@@ -170,12 +168,16 @@ def setup():
     os.chdir( DIR )
     sys.path.insert( 0, DIR )
 
-    if parse_commands() and 'sdist' not in sys.argv:
-        # Compile package unless the user wants to generate a 'sdist'.
-        pass
+    # Check whether to run the build or not.
+    run_build = parse_commands()
+
+    # Define extensions to compile.
+    extensions = []
 
     # Setup the package.
-    setuptools.setup()
+    setup(
+        ext_modules = cythonize( extensions )
+        )
 
     del sys.path[0]
     os.chdir( old_path )
@@ -183,4 +185,4 @@ def setup():
 
 
 if __name__ == '__main__':
-    setup()
+    setup_package()
