@@ -36,12 +36,10 @@ if sys.version_info[:2] < (3, 7):
 DIR = os.path.dirname( os.path.abspath( __file__ ) )
 
 
-def parse_commands( argv = sys.argv, force = '--force' in sys.argv ):
+def parse_commands():
     """
     Check the commands and respond appropriately. Disable broken commands.
     Return a boolean indicating whether to run the build or not.
-    To force unsupported commands pass `force=True`, by default check if `--force`
-    is passed as parameter of `python setup.py`.
 
     Info Commands, Other Commands ––> False
     Supported Commands ––> True
@@ -49,11 +47,17 @@ def parse_commands( argv = sys.argv, force = '--force' in sys.argv ):
     Install ––> Print warning and True
     Unsupported Commands ––> Print help string and raise Error (if not `force` in sys.argv)
     """
-    args = argv[1]
+    # Check for '--force' flag to know whether to run the setup in force mode or not.
+    force = '--force' in sys.argv
+    # Remove '--force' flag from `sys.argv`, so that setuptools doesn't throws errors (unrecognised flag).
+    if force:
+        sys.argv.remove( '--force' )
 
-    if not args:
+    try:
+        args = sys.argv[1]
+    except IndexError as e:
         # User forgot to give an argument probably, let setuptools handle that.
-        return True
+        return False
 
     # `setup.py` info commands.
     info_commands = ['--help-commands', '--name', '--version', '-V',
@@ -65,9 +69,8 @@ def parse_commands( argv = sys.argv, force = '--force' in sys.argv ):
                      'version']
 
     # If an info command is passed then return `False`.
-    for command in info_commands:
-        if command == args:
-            return False
+    if args in info_commands:
+        return False
 
     # Note that 'alias', 'saveopts' and 'setopt' commands also seem to work
     # fine as they are, but are usually used together with one of the commands
@@ -79,9 +82,8 @@ def parse_commands( argv = sys.argv, force = '--force' in sys.argv ):
                      'bdist_egg']
 
     # If an build command is passed then return `True`.
-    for command in supported_commands:
-        if command == args:
-            return True
+    if args in supported_commands:
+        return True
 
     # The following commands are supported, but there is the needing to show more
     # useful messages to the user.
@@ -94,7 +96,7 @@ def parse_commands( argv = sys.argv, force = '--force' in sys.argv ):
             """))
         return True
 
-    if '--help' == args or '-h' == args:
+    if args in ['--help', '-h']:
         print(textwrap.dedent("""
             Block-specific help
             –––––––––––––––––––––––
@@ -102,6 +104,7 @@ def parse_commands( argv = sys.argv, force = '--force' in sys.argv ):
             to use `pip install .`.
             If you are sure that you have run into a bug, please report it at
             "https://github.com/giuppox/block/issues".
+
             Setuptools commands help
             –––––––––––––––––––––––
             """))
@@ -141,7 +144,8 @@ def parse_commands( argv = sys.argv, force = '--force' in sys.argv ):
             if not force:
                 print( textwrap.dedent( unsupported_commands[command] ) +
                     "\nAdd `--force` to your command to use it anyway if you "
-                    "must (unsupported).\n" )
+                    "must (unsupported).\n"
+                    )
                 sys.exit( -1 )
             else:
                 return False
@@ -151,15 +155,11 @@ def parse_commands( argv = sys.argv, force = '--force' in sys.argv ):
 
     # If one command present in `other_commands` is passed then return `False`
     # (no need for module building).
-    for command in other_commands:
-        if command == args:
-            return False
-
-    # If the function hasn't recognized what `setup.py` command was given and `force==False`
-    # then raise `RuntimeError`.
-    if force:
+    if args in other_commands:
         return False
-    raise RuntimeError( "Unrecognized command: {}".format( args ) )
+
+    # If the function hasn't recognized what `setup.py` command was given, raise `RuntimeError`.
+    raise RuntimeError( "Command `setup.py {}` is unrecognised".format( args ) )
 
 
 def setup():
