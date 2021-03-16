@@ -1,2 +1,10 @@
-include block/*.*
+# Define files that should be included in the distribution.
+
+include MANIFEST.in
+include pyproject.toml
+include README.md
 include LICENSE
+include setup.cfg
+include setup.py
+
+include block/*.*
