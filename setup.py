@@ -1,5 +1,4 @@
-"""
-Block `setup.py` file.
+"""Block `setup.py` file.
 
 You can execute this file directly from the command line by passing commands
 keywords to python like so: `python setup.py [command]`.
@@ -24,7 +23,7 @@ import builtins
 from setuptools import setup, Extension
 from Cython.Build import cythonize
 
-logging.basicConfig( level=logging.DEBUG )
+logging.basicConfig( level = logging.DEBUG )
 logger = logging.getLogger( 'SETUP' )
 
 # Python supported version checks. Keep right after stdlib imports to ensure to
@@ -37,8 +36,7 @@ DIR = os.path.dirname( os.path.abspath( __file__ ) )
 
 
 def parse_commands():
-    """
-    Check the commands and respond appropriately. Disable broken commands.
+    """Check the commands and respond appropriately. Disable broken commands.
     Return a boolean indicating whether to run the build or not.
 
     Info Commands, Other Commands ––> False
@@ -89,15 +87,15 @@ def parse_commands():
     # useful messages to the user.
 
     if 'install' == args:
-        print(textwrap.dedent("""
+        print( textwrap.dedent("""
             Note: if you need reliable uninstall behavior, then install
             with pip instead of using `setup.py install`:
               - `pip install .`             (from a git repository or downloaded source release)
-            """))
+            """) )
         return True
 
     if args in ['--help', '-h']:
-        print(textwrap.dedent("""
+        print( textwrap.dedent("""
             Block-specific help
             –––––––––––––––––––––––
             To install Block from here with reliable uninstall, it's recomended
@@ -107,7 +105,7 @@ def parse_commands():
 
             Setuptools commands help
             –––––––––––––––––––––––
-            """))
+            """) )
         return False
 
     # The following commands aren't supported by block's `setup.py`. They can
@@ -161,7 +159,7 @@ def parse_commands():
     raise RuntimeError( "Command `setup.py {}` is unrecognised".format( args ) )
 
 def setup_package():
-    """ Run the Setup of the package. """
+    """Run the Setup of the package."""
     # Get current working directory.
     old_path = os.getcwd()
     # Change working directory to `DIR`.
