@@ -127,7 +127,8 @@ def parse_commands():
         upload="""
             `setup.py upload` is not supported, because it's insecure.
             Instead, build what you want to upload and upload those files
-            with `twine upload -s <filename>` instead.
+            with one of the following instead:
+              - `twine upload -s <filename>` instead.
             """
     )
     for command in ('upload_docs', 'easy_install', 'check', 'register',

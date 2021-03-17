@@ -7,4 +7,4 @@ include LICENSE
 include setup.cfg
 include setup.py
 
-include block/*.*
+recursive-include block *
