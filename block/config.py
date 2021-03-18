@@ -7,9 +7,6 @@ from pkg_resources import get_distribution
 
 pkg = get_distribution( 'block' )
 
-# Package location in the system.
-LOCATION: builtins.str  = pkg.location
-
 # Package name and version.
 NAME: builtins.str = pkg.project_name
 VERSION: builtins.str = pkg.version

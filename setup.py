@@ -45,6 +45,7 @@ def parse_commands():
     Install ––> Print warning and True
     Unsupported Commands ––> Print help string and raise Error (if not `force` in sys.argv)
     """
+
     # Check for '--force' flag to know whether to run the setup in force mode or not.
     force = '--force' in sys.argv
     # Remove '--force' flag from `sys.argv`, so that setuptools doesn't throws errors (unrecognised flag).
@@ -52,7 +53,7 @@ def parse_commands():
         sys.argv.remove( '--force' )
 
     try:
-        args = sys.argv[1]
+        args = sys.argv[1:]
     except IndexError as e:
         # User forgot to give an argument probably, let setuptools handle that.
         return False
@@ -67,26 +68,28 @@ def parse_commands():
                      'version']
 
     # If an info command is passed then return `False`.
-    if args in info_commands:
-        return False
+    for command in info_commands:
+        if command in args:
+            return False
 
     # Note that 'alias', 'saveopts' and 'setopt' commands also seem to work
     # fine as they are, but are usually used together with one of the commands
     # below and not standalone. Hence they're not added to `build_commands`.
     # Also, 'install' isn't added to `supported_commands` just because it is handled later.
     supported_commands = ['develop', 'build', 'build_ext', 'build_py',
-                     'build_clib', 'build_scripts', 'bdist_wheel', 'bdist_rpm',
-                     'bdist_wininst', 'bdist_msi', 'bdist_mpkg', 'build_src',
-                     'bdist_egg']
+                          'build_clib', 'build_scripts', 'bdist_wheel', 'bdist_rpm',
+                          'bdist_wininst', 'bdist_msi', 'bdist_mpkg', 'build_src',
+                          'bdist_egg']
 
     # If an build command is passed then return `True`.
-    if args in supported_commands:
-        return True
+    for command in supported_commands:
+        if command in args:
+            return True
 
     # The following commands are supported, but there is the needing to show more
     # useful messages to the user.
 
-    if 'install' == args:
+    if 'install' in args:
         print( textwrap.dedent("""
             Note: if you need reliable uninstall behavior, then install
             with pip instead of using `setup.py install`:
@@ -94,7 +97,7 @@ def parse_commands():
             """) )
         return True
 
-    if args in ['--help', '-h']:
+    if '--help' in args or '-h' in args:
         print( textwrap.dedent("""
             Block-specific help
             –––––––––––––––––––––––
@@ -139,7 +142,7 @@ def parse_commands():
 
     # If a command from `unsupported_commands` is passed then raise error.
     for command in unsupported_commands.keys():
-        if command == args:
+        if command in args:
             if not force:
                 print( textwrap.dedent( unsupported_commands[command] ) +
                     "\nAdd `--force` to your command to use it anyway if you must (unsupported).\n"
@@ -153,8 +156,9 @@ def parse_commands():
 
     # If one command present in `other_commands` is passed then return `False`
     # (no need for module building).
-    if args in other_commands:
-        return False
+    for command in other_commands:
+        if command in args:
+            return False
 
     # If the function hasn't recognized what `setup.py` command was given, raise `RuntimeError`.
     raise RuntimeError( "Command `setup.py {}` is unrecognised".format( args ) )
