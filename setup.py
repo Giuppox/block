@@ -14,36 +14,33 @@ All Block distributions are under MIT license.
 import os
 import sys
 import logging
-import subprocess
 import textwrap
-import warnings
-
-import builtins
 
 from setuptools import setup, Extension
 from Cython.Build import cythonize
 
-logging.basicConfig( level = logging.DEBUG )
-logger = logging.getLogger( 'SETUP' )
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger('SETUP')
 
 # Python supported version checks. Keep right after stdlib imports to ensure to
 # get a sensible error for older Python versions.
 if sys.version_info[:2] < (3, 7):
-    raise RuntimeError( "Python version >= 3.7 required." )
+    raise RuntimeError("Python version >= 3.7 required.")
 
 # Get module location in the system.
-DIR = os.path.dirname( os.path.abspath( __file__ ) )
+DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def parse_commands():
     """Check the commands and respond appropriately. Disable broken commands.
-    Return a boolean indicating whether to run the build or not.
 
-    Info Commands, Other Commands ––> False
-    Supported Commands ––> True
-    Help ––> Print help string
-    Install ––> Print warning and True
-    Unsupported Commands ––> Print help string and raise Error (if not `force` in sys.argv)
+    Returns:
+        Return a boolean indicating whether to run the build or not:
+        Info Commands, Other Commands ––> False
+        Supported Commands ––> True
+        Help ––> Print help string
+        Install ––> Print warning and True
+        Unsupported Commands ––> Print help string and raise Error (if not `force` in sys.argv)
     """
 
     # Check for '--force' flag to know whether to run the setup in force mode or not.
@@ -90,15 +87,15 @@ def parse_commands():
     # useful messages to the user.
 
     if 'install' in args:
-        print( textwrap.dedent("""
+        print(textwrap.dedent("""
             Note: if you need reliable uninstall behavior, then install
             with pip instead of using `setup.py install`:
               - `pip install .`             (from a git repository or downloaded source release)
-            """) )
+            """))
         return True
 
     if '--help' in args or '-h' in args:
-        print( textwrap.dedent("""
+        print(textwrap.dedent("""
             Block-specific help
             –––––––––––––––––––––––
             To install Block from here with reliable uninstall, it's recomended
@@ -108,7 +105,7 @@ def parse_commands():
 
             Setuptools commands help
             –––––––––––––––––––––––
-            """) )
+            """))
         return False
 
     # The following commands aren't supported by block's `setup.py`. They can
@@ -138,16 +135,16 @@ def parse_commands():
                     'bdist_dumb', 'bdist', 'build_sphinx', 'flake8',
                     'nosetests', 'install_data', 'install_headers',
                     'install_lib', 'install_scripts'):
-        unsupported_commands[command] = "\n`setup.py {}` is not supported\n".format( command )
+        unsupported_commands[command] = "\n`setup.py {}` is not supported\n".format(command)
 
     # If a command from `unsupported_commands` is passed then raise error.
     for command in unsupported_commands.keys():
         if command in args:
             if not force:
-                print( textwrap.dedent( unsupported_commands[command] ) +
+                print(textwrap.dedent(unsupported_commands[command]) +
                     "\nAdd `--force` to your command to use it anyway if you must (unsupported).\n"
                     )
-                sys.exit( -1 )
+                sys.exit(-1)
             else:
                 return False
 
@@ -161,15 +158,15 @@ def parse_commands():
             return False
 
     # If the function hasn't recognized what `setup.py` command was given, raise `RuntimeError`.
-    raise RuntimeError( "Command `setup.py {}` is unrecognised".format( args ) )
+    raise RuntimeError("Command `setup.py {}` is unrecognised".format(args))
 
 def setup_package():
     """Run the Setup of the package."""
     # Get current working directory.
     old_path = os.getcwd()
     # Change working directory to `DIR`.
-    os.chdir( DIR )
-    sys.path.insert( 0, DIR )
+    os.chdir(DIR)
+    sys.path.insert(0, DIR)
 
     # Check whether to run the build or not.
     run_build = parse_commands()
@@ -179,11 +176,11 @@ def setup_package():
 
     # Setup the package.
     setup(
-        ext_modules = cythonize( extensions )
+        ext_modules = cythonize(extensions)
         )
 
     del sys.path[0]
-    os.chdir( old_path )
+    os.chdir(old_path)
     return
 
 

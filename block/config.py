@@ -1,14 +1,16 @@
 """Get package metadata using importlib.
+
 Exposes:
-NAME: str, VERSION: str, location: str.
+    NAME (str): the name of the package
+    VERSION (tuple[str]): the version of the package
 """
-import builtins
+from typing import Tuple
 from pkg_resources import get_distribution
 
-pkg = get_distribution( 'block' )
+pkg = get_distribution('block')
 
 # Package name and version.
-NAME: builtins.str = pkg.project_name
-VERSION: builtins.str = pkg.version
+NAME: str = pkg.project_name
+VERSION: Tuple[str] = tuple(pkg.version.split('.'))
 
 del pkg
