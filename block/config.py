@@ -1,8 +1,8 @@
 """Get package metadata using importlib.
 
 Exposes:
-    NAME (str): the name of the package
-    VERSION (tuple[str]): the version of the package
+    `NAME` (str): the name of the package
+    `VERSION` (tuple[str]): the version of the package
 """
 from typing import Tuple
 try:
