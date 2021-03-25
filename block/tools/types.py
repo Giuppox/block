@@ -7,7 +7,7 @@ Exposes:
     `NoneType`: None type.
 """
 
-from typing import get_type_hints, get_origin, get_args, Union
+from typing import get_type_hints, get_origin, get_args, Union, Any
 from inspect import isclass, isfunction, ismethod
 
 # Expose ellipsis datatype (it should be implemented in python 3.10, but defining
@@ -28,16 +28,22 @@ def sametype( t, T ):
     Returns:
         A boolean indicating whether `t` and `T` are comparable or not.
     """
-    places = { 't': '1', 'T': '2' }
-    for arg in (t, T):
-        if not isclass(arg):
-            raise TypeError('Expected argument {} to be a class, but found "{}"'.format(
-                places[[k for k,v in locals().items() if v == arg][0]], arg
-                ))
-
-    # Simple equality check.
-    if t == T:
+    
+    # If `T` is `typing.Any` always return `True`.
+    if T == Any:
         return True
+
+    # Convert `typing.Union` to `tuple[...]`.
+    if get_origin(T) == Union:
+        T = tuple(get_args(T))
+
+    # Check whether both `t` and `T` are classes or not.
+    arguments_order = { 't': '1', 'T': '2' }
+    for arg in (t, T):
+        if not (isclass(arg) or (isinstance(arg, tuple) and not False in [isclass(k) for k in arg])):
+            raise TypeError('Expected argument {} to be a class, but found "{}"'.format(
+                arguments_order[[k for k,v in locals().items() if v == arg][0]], arg
+                ))
 
     # Check if one is subclass of the other.
     if issubclass(t, T):
@@ -57,8 +63,6 @@ def checktypes( fn ):
         The decorated function.
     """
 
-    print("`checkhints` isn't stable yet, you should definitely avoid using this!")
-
     # Get `fn` type hints.
     hints = get_type_hints(fn)
 
@@ -75,7 +79,7 @@ def checktypes( fn ):
                 if not sametype(argument_type, hints[argument]):
                     raise TypeError(
                         'Expected type of "{}" to be {}, but found {}'.format(
-                            argument, argument_type, hints[argument]
+                            argument, hints[argument], argument_type
                             )
                         )
 
