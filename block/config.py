@@ -4,7 +4,6 @@ Exposes:
     `NAME` (str): the name of the package
     `VERSION` (tuple[str]): the version of the package
 """
-from typing import Tuple
 try:
     from importlib import metadata
 except ImportError:
@@ -12,7 +11,8 @@ except ImportError:
     import importlib_metadata as metadata
 
 # Package name and version.
-NAME: str = 'block'
-VERSION: Tuple[str] = tuple(
-    metadata.version(NAME).split('.')
-    )
+try:
+    NAME: str = 'block'
+    VERSION: str = metadata.version(NAME)
+except Exception as e:
+    NAME, VERSION = None, None
