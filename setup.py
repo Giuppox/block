@@ -158,7 +158,7 @@ def parse_commands():
             return False
 
     # If the function hasn't recognized what `setup.py` command was given, raise `RuntimeError`.
-    raise RuntimeError("Command `setup.py {}` is unrecognised".format(args))
+    raise RuntimeError("Command `setup.py {}` is unrecognised".format(' '.join(args)))
 
 def setup_package():
     """Run the Setup of the package."""

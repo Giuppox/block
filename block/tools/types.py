@@ -18,7 +18,7 @@ ellipsis = type(...)
 NoneType = type(None)
 
 
-def sametype( t, T ):
+def sametype(t, T):
     """Check if the two passed datatypes are the same type; or that at least one
     is comparable to the other (like `int` and `numbers.Number`).
 
@@ -28,7 +28,7 @@ def sametype( t, T ):
     Returns:
         A boolean indicating whether `t` and `T` are comparable or not.
     """
-    
+
     # If `T` is `typing.Any` always return `True`.
     if T == Any:
         return True
@@ -40,7 +40,8 @@ def sametype( t, T ):
     # Check whether both `t` and `T` are classes or not.
     arguments_order = { 't': '1', 'T': '2' }
     for arg in (t, T):
-        if not (isclass(arg) or (isinstance(arg, tuple) and not False in [isclass(k) for k in arg])):
+        if not (isclass(arg)
+                or (isinstance(arg, tuple) and not False in [isclass(k) for k in arg])):
             raise TypeError('Expected argument {} to be a class, but found "{}"'.format(
                 arguments_order[[k for k,v in locals().items() if v == arg][0]], arg
                 ))
@@ -53,7 +54,7 @@ def sametype( t, T ):
     return False
 
 
-def checktypes( fn ):
+def checktypes(fn):
     """Check type hints of the passed function `fn` on runtime.
 
     Parameters:
