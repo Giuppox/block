@@ -5,7 +5,6 @@ Exposes:
     `sametype`: Type equality checker.
     `ellipsis`: The ellipsis datatype.
     `NoneType`: None type.
-    ``
 """
 
 from typing import get_type_hints, get_origin, get_args, Union
@@ -17,6 +16,7 @@ ellipsis = type(...)
 
 # Expose None type.
 NoneType = type(None)
+
 
 def sametype( t, T ):
     """Check if the two passed datatypes are the same type; or that at least one
@@ -31,7 +31,6 @@ def sametype( t, T ):
     places = { 't': '1', 'T': '2' }
     for arg in (t, T):
         if not isclass(arg):
-            print(locals())
             raise TypeError('Expected argument {} to be a class, but found "{}"'.format(
                 places[[k for k,v in locals().items() if v == arg][0]], arg
                 ))
@@ -46,6 +45,7 @@ def sametype( t, T ):
 
     # If the function hasn't returned `True` until here then return `False`.
     return False
+
 
 def checktypes( fn ):
     """Check type hints of the passed function `fn` on runtime.
