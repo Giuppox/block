@@ -23,7 +23,7 @@ def sametype(t, T):
     is comparable to the other (like `int` and `numbers.Number`).
 
     Parameters:
-        `t` and `T` (type): The two types to check.
+        `t` and `T` (types): The two types to check.
 
     Returns:
         A boolean indicating whether `t` and `T` are comparable or not.
@@ -58,7 +58,7 @@ def checktypes(fn):
     """Check type hints of the passed function `fn` on runtime.
 
     Parameters:
-        `fn`: A function or a class on which to apply the type checking.
+        `fn` (function): A function or a class on which to apply the type checking.
 
     Returns:
         The decorated function.

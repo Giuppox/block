@@ -141,8 +141,8 @@ def parse_commands():
     for command in unsupported_commands.keys():
         if command in args:
             if not force:
-                print(textwrap.dedent(unsupported_commands[command]) +
-                    "\nAdd `--force` to your command to use it anyway if you must (unsupported).\n"
+                print(textwrap.dedent(unsupported_commands[command])
+                    + "\nAdd `--force` to your command to use it anyway if you must (unsupported).\n"
                     )
                 sys.exit(-1)
             else:
