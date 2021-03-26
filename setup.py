@@ -144,7 +144,7 @@ def parse_commands():
                 print(textwrap.dedent(unsupported_commands[command])
                     + "\nAdd `--force` to your command to use it anyway if you must (unsupported).\n"
                     )
-                sys.exit(-1)
+                sys.exit(1)
             else:
                 return False
 
@@ -172,14 +172,18 @@ def setup_package():
     run_build = parse_commands()
 
     # Define extensions to compile.
-    extensions = cythonize([
-        Extension('dtypes', ['./block/types/dtypes.pyx'])
-        ])
+    if run_build:
+        extensions = cythonize([
+            Extension('dtypes', ['./block/types/dtypes.pyx'])
+            ])
+    else:
+        extensions = None
 
     # Setup the package.
     setup(
         ext_modules=extensions
         )
+
 
     del sys.path[0]
     os.chdir(old_path)
