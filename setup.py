@@ -47,7 +47,7 @@ def parse_commands():
     force = '--force' in sys.argv
     # Remove '--force' flag from `sys.argv`, so that setuptools doesn't throws errors (unrecognised flag).
     if force:
-        sys.argv.remove( '--force' )
+        sys.argv.remove('--force')
 
     try:
         args = sys.argv[1:]
