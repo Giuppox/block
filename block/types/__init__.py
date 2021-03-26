@@ -11,6 +11,8 @@ Exposes:
 from typing import get_type_hints, get_origin, get_args, Union, Any
 from inspect import isclass, isfunction, ismethod
 
+from . import dtypes
+
 # Expose ellipsis datatype (it should be implemented in python 3.10, but defining
 # it here allows better ellipsis handling in python >3.10 versions too).
 ellipsis = type(...)

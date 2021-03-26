@@ -172,11 +172,13 @@ def setup_package():
     run_build = parse_commands()
 
     # Define extensions to compile.
-    extensions = []
+    extensions = cythonize([
+        Extension('dtypes', ['./block/types/dtypes.pyx'])
+        ])
 
     # Setup the package.
     setup(
-        ext_modules = cythonize(extensions)
+        ext_modules=extensions
         )
 
     del sys.path[0]
