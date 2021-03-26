@@ -1,4 +1,5 @@
-"""Block types handling utility tools
+"""Block types handling utility tools.
+Better handle types; type hints runtime checking and utility types handling function.
 
 Exposes:
     `checktype`: Runtime type hints checking decorator.
@@ -62,6 +63,10 @@ def checktypes(fn):
 
     Returns:
         The decorated function.
+
+    Example:
+        `def greet(name: str) -> str:
+            return 'Hello {}!'.format(name)`
     """
 
     # Get `fn` type hints.
