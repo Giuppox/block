@@ -160,6 +160,7 @@ def parse_commands():
     # If the function hasn't recognized what `setup.py` command was given, raise `RuntimeError`.
     raise RuntimeError("Command `setup.py {}` is unrecognised".format(' '.join(args)))
 
+
 def setup_package():
     """Run the Setup of the package."""
     # Get current working directory.
@@ -174,7 +175,7 @@ def setup_package():
     # Define extensions to compile.
     if run_build:
         extensions = cythonize([
-            Extension('dtypes', ['./block/types/dtypes.pyx'])
+            Extension('block.types.dtypes', ['./block/types/dtypes.pyx'])
             ])
     else:
         extensions = None
