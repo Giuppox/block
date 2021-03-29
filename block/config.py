@@ -4,6 +4,8 @@ Exposes:
     `NAME` (str): the name of the package
     `VERSION` (tuple[str]): the version of the package
 """
+__all__ = ['NAME', 'VERSION']
+
 try:
     from importlib import metadata
 except ImportError:

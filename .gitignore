@@ -260,3 +260,7 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+### Development utilities ###
+# You can use the _ directory to make your tests.
+_/
