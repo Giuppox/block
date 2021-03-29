@@ -9,13 +9,11 @@ Exposes:
 """
 __all__ = [
     'ellipsis', 'NoneType',
-    'sametype', 'checktypes'
+    'same_type', 'check_types'
     ]
 
 from typing import get_type_hints, get_origin, get_args, Union, Any
 from inspect import isclass, isfunction, ismethod
-
-from . import dtypes
 
 
 # Expose ellipsis datatype (it should be implemented in python 3.10, but defining
@@ -26,7 +24,7 @@ ellipsis = type(...)
 NoneType = type(None)
 
 
-def sametype(t, T):
+def same_type(t, T):
     """Check if the two passed datatypes are the same type; or that at least one
     is comparable to the other (like `int` and `numbers.Number`).
 
@@ -62,7 +60,7 @@ def sametype(t, T):
     return False
 
 
-def checktypes(fn):
+def check_types(fn):
     """Check type hints of the passed function `fn` on runtime.
 
     Parameters:
@@ -89,7 +87,7 @@ def checktypes(fn):
         # Check function args types where passed correctly.
         for argument, argument_type in ((i, type(j)) for i, j in all_args.items()):
             if argument in hints:
-                if not sametype(argument_type, hints[argument]):
+                if not same_type(argument_type, hints[argument]):
                     raise TypeError(
                         'Expected type of "{}" to be {}, but found {}'.format(
                             argument, hints[argument], argument_type
@@ -101,7 +99,7 @@ def checktypes(fn):
 
         # Check the return type of `fn` is correct.
         if 'return' in hints:
-            if not sametype(type(result), hints['return']):
+            if not same_type(type(result), hints['return']):
                 raise TypeError(
                     'Expected return type to be {}, but found {}'.format(
                         type(result), hints['return']
