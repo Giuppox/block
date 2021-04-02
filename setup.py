@@ -3,9 +3,9 @@
 You can execute this file directly from the command line by passing commands
 keywords to python like so: `python setup.py [command]`.
 Useful commands you are probably interested about:
-  - `build`: build the package.
-  - `install`: install the package (not reliable).
-  - `--version`: get block's current version.
+  - `setup.py build`: build the package.
+  - `setup.py install`: install the package (not reliable).
+  - `setup.py --version`: get block's current version.
 To know about block's `setup.py` commands run `python setup.py --help`.
 
 All Block distributions are under MIT license.
@@ -13,6 +13,7 @@ All Block distributions are under MIT license.
 
 import os
 import sys
+import subprocess
 import logging
 import textwrap
 
@@ -31,28 +32,67 @@ if sys.version_info[:2] < (3, 7):
 DIR = os.path.dirname(os.path.abspath(__file__))
 
 
+def check_submodules():
+    """Verify that the submodules are checked out and clean
+    use `git submodule update --init`; on failure.
+
+    Raises
+    ------
+    Raises `ValueError` if a submodule specified in `.gitmodules` doesn't
+    exists, while raises `ValueError` if a submodule is not clean.
+    """
+    # Check whether the directory is a git repository or not.
+    if not os.path.exists('.git'):
+        return
+    # Look for `.gitmodules` file to get submodules names.
+    with open('.gitmodules') as f:
+        for line in f:
+            if 'path' in line:
+                p = line.split('=')[-1].strip()
+                # Check whether the sybnodyle exists or not.
+                if not os.path.exists(p):
+                    raise ValueError('Submodule {} missing'.format(p))
+
+    proc = subprocess.Popen(['git', 'submodule', 'status'],
+                            stdout=subprocess.PIPE)
+    status, _ = proc.communicate()
+    status = status.decode("ascii", "replace")
+    for line in status.splitlines():
+        if line.startswith('-') or line.startswith('+'):
+            raise ValueError('Submodule not clean: {}'.format(line))
+
+
 def parse_commands():
     """Check the commands and respond appropriately. Disable broken commands.
 
-    Returns:
-        Return a boolean indicating whether to run the build or not:
-        Info Commands, Other Commands ––> False
-        Supported Commands ––> True
-        Help ––> Print help string
-        Install ––> Print warning and True
-        Unsupported Commands ––> Print help string and raise Error (if not `force` in sys.argv)
+    Parse commands passed as command line arguments `python setup.py <command>`.
+    For passed info commands (e.g. '--version', `--license`) don't run the build,
+    the same for unsupported commands (e.g. `--clean`, '--bdist'), that are
+    actually supported by setuptools, but that are considered not usefull to
+    the package or unsecure.
+    For supported commands the package should be builded (e.g. `build`, `develop`).
+
+    Returns
+    -------
+    Return a boolean indicating whether to run the build or not.
+
+    Raises
+    ------
+    Raises `RuntimeError` in the case the command-line-passed command is not
+    recognized, while raises `SystemExit` if an unsupported command is found.
     """
 
     # Check for '--force' flag to know whether to run the setup in force mode or not.
     force = '--force' in sys.argv
-    # Remove '--force' flag from `sys.argv`, so that setuptools doesn't throws errors (unrecognised flag).
+    # Remove '--force' flag from `sys.argv`, so that setuptools doesn't throws
+    # errors (unrecognised flag).
     if force:
         sys.argv.remove('--force')
 
     try:
         args = sys.argv[1:]
     except IndexError as e:
-        # User forgot to give an argument probably, let setuptools handle that.
+        # User probably forgot to pass an argument, let setuptools handle that.
         return False
 
     # `setup.py` info commands.
@@ -104,7 +144,7 @@ def parse_commands():
             "https://github.com/giuppox/block/issues".
 
             Setuptools commands help
-            –––––––––––––––––––––––
+            ––––––––––––––––––––––––
             """))
         return False
 
@@ -114,13 +154,15 @@ def parse_commands():
         test="""
             `setup.py test` is not supported. Use one of the following
             instead:
-              - `>>> import block as bk
-                 >>> bk.test()`             (run test from within an interpreter)
+              - ```python
+                >>> import block as bk
+                >>> bk.test()
+                ```                         (run test from within an interpreter)
             """,
         clean="""
             `setup.py clean` is not supported, use one of the following instead:
               - `git clean -xdf`            (cleans all files)
-              - `git clean -Xdf`            (cleans all versioned files, doesn't touch
+              - `git clean -Xdf `           (cleans all versioned files, doesn't touch
                                              files that aren't checked into the git
                                              repository)
             """,
@@ -163,6 +205,7 @@ def parse_commands():
 
 def setup_package():
     """Run the Setup of the package."""
+
     # Get current working directory.
     old_path = os.getcwd()
     # Change working directory to `DIR`.
@@ -172,11 +215,14 @@ def setup_package():
     # Check whether to run the build or not.
     run_build = parse_commands()
 
+    # If a the user wants to generate a sdist check for the consistency of
+    # package's submodules.
+    if 'sdist' in sys.argv:
+        check_submodules()
+
     # Define extensions to compile.
     if run_build:
-        extensions = cythonize([
-            Extension('block.types.dtypes', ['./block/types/dtypes.pyx'])
-            ])
+        extensions = cythonize([])
     else:
         extensions = None
 
