@@ -1,3 +1,11 @@
+### Development utilities ###
+# You can use the _ directory to make your tests.
+_/
+
+### Block specific files ###
+# Block-generated configuration files.
+_config.py
+
 ### C ###
 # Prerequisites
 *.d
@@ -260,7 +268,3 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-
-### Development utilities ###
-# You can use the _ directory to make your tests.
-_/
