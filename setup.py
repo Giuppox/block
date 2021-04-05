@@ -2,10 +2,12 @@
 
 You can execute this file directly from the command line by passing commands
 keywords to python like so: `python setup.py [command]`.
+
 Useful commands you are probably interested about:
   - `setup.py build`: build the package.
   - `setup.py install`: install the package (not reliable).
   - `setup.py --version`: get block's current version.
+
 To know about block's `setup.py` commands run `python setup.py --help`.
 
 All Block distributions are under MIT license.
@@ -16,21 +18,31 @@ import sys
 import subprocess
 import logging
 import textwrap
+import builtins
 
 from setuptools import setup, Extension
 from setuptools.config import read_configuration
 from Cython.Build import cythonize
 
+
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger('SETUP')
+
 
 # Python supported version checks. Keep right after stdlib imports to ensure to
 # get a sensible error for older Python versions.
 if sys.version_info[:2] < (3, 7):
     raise RuntimeError("Python version >= 3.7 required.")
 
+
 # Get module location in the system.
 DIR = os.path.dirname(os.path.abspath(__file__))
+
+
+# This is a bit hackish: Set a global variable so that the main block `__init__.py`
+# can detect if it is being loaded by the setup routine, to avoid attempting
+# to load components that aren't built yet.
+builtins.__BLOCK_SETUP__ = True
 
 
 def check_submodules():
@@ -288,7 +300,9 @@ def setup_package():
 
     # Define extensions to compile.
     if run_build:
-        extensions = cythonize([])
+        extensions = cythonize([
+            Extension('block.core.dtypes.dtypes', ['block/core/dtypes/dtypes.c'])
+            ])
     else:
         extensions = None
 
@@ -305,3 +319,7 @@ def setup_package():
 
 if __name__ == '__main__':
     setup_package()
+    # This may avoid problems where block is installed via `*_requires` by
+    # setuptools, the global namespace isn't reset properly, and then block is
+    # imported later (which will then fail to load block extension modules).
+    del builtins.__BLOCK_SETUP__
