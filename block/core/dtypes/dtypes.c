@@ -1,6 +1,5 @@
-//#define PY_SSIZE_T_CLEAN
-//#include <Python.h>
+#define PY_SSIZE_T_CLEAN
+#include <Python.h>
 
-#include <stdio.h>
-
+#include "scalartypes.h"
 #include "dtypes.h"
