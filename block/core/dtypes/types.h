@@ -1,7 +1,7 @@
 #ifndef BLOCK_CORE_DTYPES_TYPES_H
 #define BLOCK_CORE_DTYPES_TYPES_H
 
-// The following two macro definitions can be used to apply a
+// The following macro definitions can be used to apply a
 // macro over each C data type of that type. Just like:
 // ```C
 // #define TEST(type, name) type name##_TEST;
@@ -32,5 +32,12 @@
     M(float _Complex, blk_floatcomplex)               \
     M(double _Complex, blk_doublecomplex)             \
     M(long double _Complex, blk_longdoublecomplex)
+
+
+// Undefine `BLK_INTEGERS`, `BLK_FLOATINGPOINTS` and `BLK_COMPLEX`
+// macros to avoid conflicts when block is eventually included as header.
+/*#undef BLK_INTEGERS
+#undef BLK_FLOATINGPOINTS
+#undef BLK_COMPLEX*/
 
 #endif
