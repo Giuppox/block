@@ -10,13 +10,13 @@ and Scientific Engineering. It provides:
 
 Get started
 -----------
-To get started just type `import block as blk` in the python console and
-`blk.test()` to test the installation. See block official documentation
+To get started just type ``import block as blk`` in the python console and
+``blk.test()`` to test the installation. See block official documentation
 for more info.
 
 Example
 -------
-Block's Hello World! Create two block tensors (`blk.tensor`) and sum them.
+Block's Hello World! Create two block tensors (``blk.tensor``) and sum them.
 ```python
 >>> import block as blk
 >>> x, y = blk.tensor([1, 2, 3], [3, 2, 1])
@@ -26,7 +26,7 @@ Tensor[4, 4, 4]
 
 Attributes
 ----------
-`core` (module)
+``core`` (module)
 
 To see submodules specific documentation run `help(submodule)` or `submodule.__doc__`
 

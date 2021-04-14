@@ -34,7 +34,7 @@
     M(long double _Complex, blk_longdoublecomplex)
 
 
-// Undefine `BLK_INTEGERS`, `BLK_FLOATINGPOINTS` and `BLK_COMPLEX`
+// Undefine ``BLK_INTEGERS``, ``BLK_FLOATINGPOINTS`` and ``BLK_COMPLEX``
 // macros to avoid conflicts when block is eventually included as header.
 /*#undef BLK_INTEGERS
 #undef BLK_FLOATINGPOINTS

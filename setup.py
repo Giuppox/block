@@ -1,14 +1,14 @@
 """Block `setup.py` file.
 
 You can execute this file directly from the command line by passing commands
-keywords to python like so: `python setup.py [command]`.
+keywords to python like so: ``python setup.py <command>``.
 
 Useful commands you are probably interested about:
-  - `setup.py build`: build the package.
-  - `setup.py install`: install the package (not reliable).
-  - `setup.py --version`: get block's current version.
+  - ``setup.py build``: build the package.
+  - ``setup.py install``: install the package (not reliable).
+  - ``setup.py --version``: get block's current version.
 
-To know about block's `setup.py` commands run `python setup.py --help`.
+To know about block's `setup.py` commands run ``python setup.py --help``.
 
 All Block distributions are under MIT license.
 """
@@ -39,7 +39,7 @@ if sys.version_info[:2] < (3, 7):
 DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-# This is a bit hackish: Set a global variable so that the main block `__init__.py`
+# This is a bit hackish: Set a global variable so that the main block ``__init__.py``
 # can detect if it is being loaded by the setup routine, to avoid attempting
 # to load components that aren't built yet.
 builtins.__BLOCK_SETUP__ = True
@@ -47,7 +47,7 @@ builtins.__BLOCK_SETUP__ = True
 
 def check_submodules():
     """Verify that the submodules are checked out and clean
-    use `git submodule update --init`; on failure.
+    use ``git submodule update --init``; on failure.
 
     Raises
     ------
@@ -79,8 +79,8 @@ def check_submodules():
 def parse_commands():
     """Check the commands and respond appropriately. Disable broken commands.
 
-    Parse commands passed as command line arguments `python setup.py <command>`.
-    For passed info commands (e.g. '--version', `--license`) don't run the build,
+    Parse commands passed as command line arguments ``python setup.py <command>``.
+    For passed info commands (e.g. `--version`, `--license`) don't run the build,
     the same for unsupported commands (e.g. `--clean`, '--bdist'), that are
     actually supported by setuptools, but that are considered not usefull to
     the package or unsecure.
@@ -123,7 +123,7 @@ def parse_commands():
         if command in args:
             return False
 
-    # Note that 'alias', 'saveopts' and 'setopt' commands also seem to work
+    # Note that `alias`, `saveopts` and `setopt` commands also seem to work
     # fine as they are, but are usually used together with one of the commands
     # below and not standalone. Hence they're not added to `build_commands`.
     # Also, 'install' isn't added to `supported_commands` just because it is handled later.
@@ -163,10 +163,10 @@ def parse_commands():
         return False
 
     # The following commands aren't supported by block's `setup.py`. They can
-    # only be executed when the user explicitly adds a --force command-line argument.
+    # only be executed when the user explicitly adds a `--force` command-line argument.
     unsupported_commands = dict(
         test="""
-            `setup.py test` is not supported. Use one of the following
+            ``setup.py test`` is not supported. Use one of the following
             instead:
               - ```python
                 >>> import block as bk
@@ -174,14 +174,14 @@ def parse_commands():
                 ```                         (run test from within an interpreter)
             """,
         clean="""
-            `setup.py clean` is not supported, use one of the following instead:
+            ``setup.py clean`` is not supported, use one of the following instead:
               - `git clean -xdf`            (cleans all files)
               - `git clean -Xdf `           (cleans all versioned files, doesn't touch
                                              files that aren't checked into the git
                                              repository)
             """,
         upload="""
-            `setup.py upload` is not supported, because it's insecure.
+            ``setup.py upload`` is not supported, because it's insecure.
             Instead, build what you want to upload and upload those files
             with one of the following instead:
               - `twine upload -s <filename>` instead.
@@ -191,7 +191,7 @@ def parse_commands():
                     'bdist_dumb', 'bdist', 'build_sphinx', 'flake8',
                     'nosetests', 'install_data', 'install_headers',
                     'install_lib', 'install_scripts'):
-        unsupported_commands[command] = "\n`setup.py {}` is not supported\n".format(command)
+        unsupported_commands[command] = "\n``setup.py {}`` is not supported\n".format(command)
 
     # If a command from `unsupported_commands` is passed then raise error.
     for command in unsupported_commands.keys():
@@ -214,7 +214,7 @@ def parse_commands():
             return False
 
     # If the function hasn't recognized what `setup.py` command was given, raise `RuntimeError`.
-    raise RuntimeError("Command `setup.py {}` is unrecognised".format(' '.join(args)))
+    raise RuntimeError("Command ``setup.py {}`` is unrecognised".format(' '.join(args)))
 
 
 def setup_package():
