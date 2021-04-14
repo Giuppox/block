@@ -56,31 +56,31 @@ Code layout
   and no statements on the same line as the if.
   They should be formatted as shown: ::
 
-    if (condition) {
-        // If ``condition`` is a truthy value do something...
-    } else {
-        // Otherwise do something else.
-    }
+      if (condition) {
+          // If ``condition`` is a truthy value do something...
+      } else {
+          // Otherwise do something else.
+      }
 
-    for (init; condition; update) {
-        // Do something...
-    }
+      for (init; condition; update) {
+          // Do something...
+      }
 
-    while (condition) {
-        // Do something cool...
-    }
+      while (condition) {
+          // Do something cool...
+      }
 
-    do {
-        // Do some stuff.
-    } while (condition);
+      do {
+          // Do some stuff.
+      } while (condition);
 
-    switch (kind) {
-        case 'a':
-            return 0;
-        case 'b':
-            return 1;
-        default:
-            return 2;
+      switch (kind) {
+          case 'a':
+              return 0;
+          case 'b':
+              return 1;
+          default:
+              return 2;
     }
 
 * The return statement should not get redundant parentheses: ::
