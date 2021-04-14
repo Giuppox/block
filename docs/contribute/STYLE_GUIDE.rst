@@ -16,8 +16,8 @@ Two good reasons to break a particular rule:
    historic reasons) – although this is also an opportunity to clean up someone
    else’s mess.
 
-C detailed description
-======================
+C detailed guide
+================
 The Block C coding conventions are based on Python
 `PEP 7 – Style Guide for C <https://www.python.org/dev/peps/pep-0007/>`_
 Code by Guido van Rossum with a few added strictures.
@@ -132,7 +132,7 @@ Code layout
   do ::
 
       if (condition) {
-          // Success!
+          // Right!
 
 * All functions and global variables should be declared static when they aren’t
   needed outside the current compilation unit.

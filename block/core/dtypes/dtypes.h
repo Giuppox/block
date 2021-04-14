@@ -13,8 +13,8 @@
         PyObject_HEAD         \
         dtype value;          \
     } name##_object;
-INTEGERS(OBJ)
-FLOATINGPOINTS(OBJ)
+BLK_INTEGERS(OBJ)
+BLK_FLOATINGPOINTS(OBJ)
 #undef OBJ
 
 #endif
