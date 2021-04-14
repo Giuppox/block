@@ -81,7 +81,7 @@ Code layout
               return 1;
           default:
               return 2;
-    }
+      }
 
 * The return statement should not get redundant parentheses: ::
 
@@ -97,8 +97,8 @@ Code layout
 * Breaking long lines: If you can, break after commas in the outermost argument
   list. Always indent continuation lines appropriately: ::
 
-    PyErr_SetString(PyExc_TypeError,
-            "Oh dear, you messed up.");
+      PyErr_SetString(PyExc_TypeError,
+              "Oh dear, you messed up.");
 
   Here appropriately means at least a double indent (8 spaces). It isn’t
   necessary to line everything up with the opening parenthesis of the function
