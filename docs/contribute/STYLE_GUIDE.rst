@@ -45,7 +45,7 @@ Code layout
   In the second row should be specified the function name and arguments::
 
       static long
-      PyObjectToLong(PyObject *value)
+      PyObject_ToLong(PyObject *value)
       {
           assert(PyInt_Check(value) == 1);
           return (long) PyInt_AsLong(value);
@@ -133,6 +133,13 @@ Code layout
 
       if (condition) {
           // Right!
+
+  In rare cases, when you need to write a list of declarations you can use
+  in-line trailing comments, all indented to four spaces from the longer
+  declaration: ::
+
+      char *greet = "Hello World!";    // A greeting
+      double pi = 3.1415926535;        // Pi
 
 * All functions and global variables should be declared static when they aren’t
   needed outside the current compilation unit.
