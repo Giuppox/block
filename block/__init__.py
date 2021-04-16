@@ -28,12 +28,13 @@ Attributes
 ----------
 ``core`` (module)
 
-To see submodules specific documentation run `help(submodule)` or `submodule.__doc__`
+To see submodules specific documentation run ``help(submodule)`` or
+``submodule.__doc__``
 
 """
 import sys
 
-# First detect if we're being called as part of the block setup
+# First detect if this is being called as part of the block setup
 # procedure itself in a reliable manner.
 try:
     __BLOCK_SETUP__
