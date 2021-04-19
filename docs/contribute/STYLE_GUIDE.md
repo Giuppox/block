@@ -81,6 +81,14 @@ PyObject_ToLong(PyObject *value)
     return (long) PyInt_AsLong(value);
 }
 ```
+When defining non-`static` functions with a name of 15 or less characters you
+can declare the return type, the name and the opening braces all in the same
+line.
+```C
+long PySum(PyObject *a, PyObject *a) {
+    return PyInt_AsLong(a) + PyInt_AsLong(b);
+}
+```
 The function calling style consists in no space before the open parentheses, no
 spaces inside the parentheses, no spaces before commas, one space after each
 comma.
@@ -92,7 +100,6 @@ You should also avoid writing useless `return` statements in `void` functions.
 One space between keywords like if, for and the following left
 parenthesis; no spaces inside the parenthesis; braces around all if branches,
 and no statements on the same line as the if.
-They should be formatted as shown:
 ```C
 if (condition) {
     // If `condition` is a truthy value do something...
@@ -112,21 +119,44 @@ do {
     // Do some stuff.
 } while (condition);
 
-switch (kind) {
-  case 'a':
-      return 0;
-  case 'b':
-      return 1;
-  default:
-      return 2;
+switch (value) {
+    case 'a':
+        // Case A
+    case 'b':
+        // Case B
+    default:
+        // Default case.
 }
+```
+Thought the use of `while` loops are accepted the use of `for` should
+be preferred (mainly just for consistency purposes):
+```C
+// :(
+while (condition) {
+    // Do some stuff...
+}
+
+// Better :)
+for (; condition; ) {
+    // Do some other stuff...
+}
+```
+Note that you should *always* use in-line for loops when possible:
+```C
+// Incorrect
+for (int i = 0; i < 10; i++) {
+  printf("%i\n", i);
+}
+
+// Correct
+for (int i = 0; i < 10; printf("%i\n", i), i++);
 ```
 #### 2.2.6 Redundant parentheses policy <a name="2-2-6"></a>
 You should avoid using redundant parentheses in statements like `return` or
 `sizeof`:
 ```C
-return Py_None; /* correct */
-return(Py_None); /* incorrect */
+return Py_None; /* Correct */
+return(Py_None); /* Incorrect */
 ```
 #### 2.2.7 Operators style <a name="2-2-7"></a>
 Always put spaces around the assignment, Boolean, and comparison operators. In
