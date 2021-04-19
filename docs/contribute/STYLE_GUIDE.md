@@ -1,4 +1,5 @@
-# Style Guide
+# Style Guide
+
 * 1 [Background](#1)
 * 2 [C language rules](#2)
   * 2.1 [Dialect](#2-1)
@@ -217,6 +218,6 @@ Declare external functions and variables in a header file.
   what the function does, but the focus of the comments should be on how it does
   it.
 
-## 3 Python language rules <a name="3"></a>
-Block's Python style guidelines are based on Guido Var Rossum's
+## 3 Python language rules <a name="3"></a>
+Block's Python style guidelines are based on Guido Van Rossum's
 [PEP8 – Style Guide for Python Code](https://www.python.org/dev/peps/pep-0008/)
