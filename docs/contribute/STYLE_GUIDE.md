@@ -82,7 +82,7 @@ PyObject_ToLong(PyObject *value)
 }
 ```
 When defining non-`static` functions with a name of 15 or less characters you
-can declare the return type, the name and the opening braces all in the same
+can declare the return type, the name and the opening brace all in the same
 line.
 ```C
 long PySum(PyObject *a, PyObject *a) {
@@ -207,7 +207,7 @@ if (condition) {
     // Right!
 ```
 In rare cases, when you need to write a list of declarations you can use
-in-line trailing comments, all indented to four spaces from the longer
+in-line trailing comments, all indented four spaces after the longer
 declaration:
 ```C
 char *greet = "Hello World!";    // A greeting
@@ -220,12 +220,12 @@ Declare external functions and variables in a header file.
 
 ### 2.3 Naming conventions <a name="2-3"></a>
 * All Block public function should begin with a prefix of some sort, followed by
-  an underscore, and are un camel case: e.g. `BlkTensor_Init`.
-* Public Macros should have a `BLK_` prefix and then use upper case, for
+  an underscore, and from a camel case name: e.g. `BlkTensor_Init`.
+* Public Macros should have a `BLK_` prefix followed by an upper case name, for
   example, `BLK_LONG`.
 * Private functions should be lower case with underscores, for example:
   `array_real_get`. Single leading underscores should not be used, but some
-  current function names violate that rule due to historical accident.
+  current function names may violate that rule due to historical accident.
 
 ### 2.4 Documentation <a name="2-4"></a>
 * Function declarations: Every function declaration should have comments
