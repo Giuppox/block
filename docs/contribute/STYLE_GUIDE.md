@@ -145,7 +145,7 @@ Note that you should *always* use in-line for loops when possible:
 ```C
 // Incorrect
 for (int i = 0; i < 10; i++) {
-  printf("%i\n", i);
+    printf("%i\n", i);
 }
 
 // Correct
