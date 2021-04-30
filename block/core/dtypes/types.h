@@ -22,6 +22,8 @@
     M(unsigned long long, blk_ulonglong)
 
 // Define floating points data types definitions.
+// Note that it is `BLK_FLOATINGPOINTS` and not `BLK_FLOATING_POINTS`
+// just for consistency and for historical reasons.
 #define BLK_FLOATINGPOINTS(M)         \
     M(float, blk_float)               \
     M(double, blk_double)             \
@@ -34,7 +36,7 @@
     M(long double _Complex, blk_longdoublecomplex)
 
 
-// Undefine ``BLK_INTEGERS``, ``BLK_FLOATINGPOINTS`` and ``BLK_COMPLEX``
+// Undefine `BLK_INTEGERS`, `BLK_FLOATINGPOINTS` and `BLK_COMPLEX`
 // macros to avoid conflicts when block is eventually included as header.
 /*#undef BLK_INTEGERS
 #undef BLK_FLOATINGPOINTS
