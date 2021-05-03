@@ -8,13 +8,13 @@
 //    dtype value;
 // } blk_dtype_object;
 // ```
-#define OBJ(dtype, name)      \
-    typedef struct {          \
-        PyObject_HEAD         \
-        dtype value;          \
-    } name##_object;
-BLK_INTEGERS(OBJ)
-BLK_FLOATINGPOINTS(OBJ)
-#undef OBJ
+#define OBJECT(DTYPE, NAME)    \
+    typedef struct {           \
+        PyObject_HEAD          \
+        DTYPE value;           \
+    } NAME##_object;
+BLK_INTEGERS(OBJECT)
+BLK_FLOATINGPOINTS(OBJECT)
+#undef OBJECT
 
 #endif

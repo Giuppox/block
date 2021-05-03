@@ -4,7 +4,7 @@
 // The following macro definitions can be used to apply a
 // macro over each C data type of that type. Just like:
 // ```C
-// #define TEST(type, name) type name##_TEST;
+// #define TEST(type, name) type name##_TEST
 // BLK_FLOATINGPOINTS(TEST)
 // ```
 
