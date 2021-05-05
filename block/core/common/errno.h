@@ -11,6 +11,7 @@
  * ```
  */
 
+typedef char * string;
 
 /*
  * Declare block error codes. Note that when needed you should create new error
@@ -38,21 +39,19 @@
     M(OverflowError)
 
 // Declare `BlkErrNo_Type` enumeration for error codes
-#define ERRNO_ENUM(ENUM) ENUM,
+#define ENUM(M) M,
 typedef enum {
-    ERRNO(ERRNO_ENUM)
+    ERRNO(ENUM)
 } BlkErrNo_Type;
-#undef ERRNO_ENUM
+#undef ENUM
 
 // Declare block error codes as string, so that they can be used for printing
 // error messages.
-#define ERRNO_STRING(STRING) #STRING,
-const char *BlkErrNo_TypeStrings[] = {
-    ERRNO(ERRNO_STRING)
+#define STRING(M) #M,
+const char *BlkErrNo_Type_Strings[] = {
+    ERRNO(STRING)
 };
-#undef ERRNO_STRING
-
-#undef ERRNO
+#undef STRING
 
 
 // Declare block `BlkErrNo` struct, that should be the return type of all block
@@ -60,19 +59,26 @@ const char *BlkErrNo_TypeStrings[] = {
 typedef struct BlkErrNo BlkErrNo;
 struct BlkErrNo {
     BlkErrNo_Type type;
-    void (*str)(BlkErrNo *, char *);
+    string (*repr)(BlkErrNo *, char *);
     const char *file;
-    unsigned int line;
+    unsigned int line, column;
 };
 
 // Define `BlkErrNo` creation function.
 BlkErrNo *BlkErrNo_New(
-    BlkErrNo_Type type, void (*str)(BlkErrNo *, char *),
-    const char *file, unsigned int line);
+    BlkErrNo_Type type, string (*repr)(BlkErrNo *, char *),
+    const char *file, unsigned int line, unsigned int column);
 
+// Get prefix of error code, in the form `filepath:row:col type`.
+// Define a generic representation function for error codes.
+char *BlkErrNo_Prefix(BlkErrNo *self, char *str);
 
-// Define default `errno_str` function for `Pass` errno (`BlkErrNo_Type`).
-void BlkErrNo_Pass(BlkErrNo *self, char *str);
+// Define default `repr` functions for error codes (`BlkErrNo_Type`).
+#define STR(M) char *BlkErrNo_Repr_##M(BlkErrNo *self, char *str);
+ERRNO(STR)
+#undef STR
 
+// Remove `ERRNO` macro to avoid conflicts.
+#undef ERRNO
 
 #endif
