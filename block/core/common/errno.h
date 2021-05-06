@@ -11,8 +11,6 @@
  * ```
  */
 
-typedef char * string;
-
 /*
  * Declare block error codes. Note that when needed you should create new error
  * codes instead of using the generic `Error` Exception.
@@ -59,22 +57,22 @@ const char *BlkErrNo_Type_Strings[] = {
 typedef struct BlkErrNo BlkErrNo;
 struct BlkErrNo {
     BlkErrNo_Type type;
-    string (*repr)(BlkErrNo *, char *);
+    char *(*repr)(BlkErrNo *, char **);
     const char *file;
     unsigned int line, column;
 };
 
 // Define `BlkErrNo` creation function.
 BlkErrNo *BlkErrNo_New(
-    BlkErrNo_Type type, string (*repr)(BlkErrNo *, char *),
+    BlkErrNo_Type type, char *(*repr)(BlkErrNo *, char **),
     const char *file, unsigned int line, unsigned int column);
 
 // Get prefix of error code, in the form `filepath:row:col type`.
 // Define a generic representation function for error codes.
-char *BlkErrNo_Prefix(BlkErrNo *self, char *str);
+char *BlkErrNo_Prefix(BlkErrNo *self, char **str);
 
 // Define default `repr` functions for error codes (`BlkErrNo_Type`).
-#define STR(M) char *BlkErrNo_Repr_##M(BlkErrNo *self, char *str);
+#define STR(M) char *BlkErrNo_Repr_##M(BlkErrNo *self, char **str);
 ERRNO(STR)
 #undef STR
 
